@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVENTS - Presentación</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sena: '#39a900', // Verde Institucional SENA
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px) scale(0.98)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #39a900;
+        }
+
+        /* Asegurar que el scroll no rompa la vista en móviles */
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Forzar el color verde del SENA en el botón activo y matar el gris de DaisyUI */
+        .menu li button.active,
+        .menu li button.active:hover {
+            background-color: #38a900cf !important;
+            color: #ffffff !important;
+        }
+        
+    </style>
+</head>
+
+<body class="bg-base-300 text-base-content min-h-screen flex flex-col lg:flex-row font-sans antialiased pb-20 lg:pb-0">
+
+    <!-- BARRA DE NAVEGACIÓN ORDENADOR -->
+    <aside class="hidden lg:flex fixed left-4 top-1/2 -translate-y-1/2 z-50 flex-col drop-shadow-2xl">
+        <ul class="menu bg-base-200/90 backdrop-blur-md border border-white/5 p-2.5 rounded-2xl gap-2 shadow-black/40">
+
+            <div class="flex items-center justify-center py-2 mb-1 border-b border-white/5">
+                <div
+                    class="w-8 h-8 rounded-xl bg-sena/10 border border-sena/20 flex items-center justify-center text-sena">
+                    <i class="ph-bold ph-calendar-check text-xl"></i>
+                </div>
+            </div>
+
+            <li>
+                <button onclick="switchTab('portada')" id="nav-portada"
+                    class="nav-btn active tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl bg-sena text-black shadow-xl shadow-sena/50 transition-all duration-300"
+                    data-tip="Inicio">
+                    <i class="ph-bold ph-house text-xl shrink-0"></i>
+                </button>
+            </li>
+
+            <li>
+                <button onclick="switchTab('problema')" id="nav-problema"
+                    class="nav-btn tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl text-white/30 hover:text-[#39a900] hover:bg-[#39a900]/10 transition-all duration-300"
+                    data-tip="Introducción">
+                    <i class="ph-bold ph-warning-circle text-xl shrink-0"></i>
+                </button>
+            </li>
+
+            <li>
+                <button onclick="switchTab('solucion')" id="nav-solucion"
+                    class="nav-btn tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl text-white/30 hover:text-[#39a900] hover:bg-[#39a900]/10 transition-all duration-300"
+                    data-tip="Justificación">
+                    <i class="ph-bold ph-lightbulb text-xl shrink-0"></i>
+                </button>
+            </li>
+
+            <li>
+                <button onclick="switchTab('objetivos')" id="nav-objetivos"
+                    class="nav-btn tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl text-white/30 hover:text-[#39a900] hover:bg-[#39a900]/10 transition-all duration-300"
+                    data-tip="Descripción">
+                    <i class="ph-bold ph-target text-xl shrink-0"></i>
+                </button>
+            </li>
+
+            <li>
+                <button onclick="switchTab('arquitectura')" id="nav-arquitectura"
+                    class="nav-btn tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl text-white/30 hover:text-[#39a900] hover:bg-[#39a900]/10 transition-all duration-300"
+                    data-tip="Tecnología">
+                    <i class="ph-bold ph-cpu text-xl shrink-0"></i>
+                </button>
+            </li>
+
+            <li>
+                <button onclick="switchTab('impacto')" id="nav-impacto"
+                    class="nav-btn tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl text-white/30 hover:text-[#39a900] hover:bg-[#39a900]/10 transition-all duration-300"
+                    data-tip="Impacto">
+                    <i class="ph-bold ph-chart-line-up text-xl shrink-0"></i>
+                </button>
+            </li>
+
+        </ul>
+    </aside>
+
+    <!-- BARRA DE NAVEGACIÓN MOBIL -->
+    <div
+        class="lg:hidden fixed bottom-0 left-0 right-0 bg-base-200/90 backdrop-blur-lg border-t border-white/5 z-50 px-2 py-2 flex justify-around items-center shadow-2xl">
+        <button onclick="switchTab('portada')" id="m-nav-portada"
+            class="m-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all text-sena bg-sena/10">
+            <i class="ph-bold ph-house text-lg"></i>
+            <span class="text-[9px] font-bold mt-0.5">Inicio</span>
+        </button>
+        <button onclick="switchTab('problema')" id="m-nav-problema"
+            class="m-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all text-white/40">
+            <i class="ph-bold ph-warning-circle text-lg"></i>
+            <span class="text-[9px] font-bold mt-0.5">Intruduccion</span>
+        </button>
+        <button onclick="switchTab('solucion')" id="m-nav-solucion"
+            class="m-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all text-white/40">
+            <i class="ph-bold ph-lightbulb text-lg"></i>
+            <span class="text-[9px] font-bold mt-0.5">Justificación</span>
+        </button>
+        <button onclick="switchTab('objetivos')" id="m-nav-objetivos"
+            class="m-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all text-white/40">
+            <i class="ph-bold ph-target text-lg"></i>
+            <span class="text-[9px] font-bold mt-0.5">Descripción</span>
+        </button>
+        <button onclick="switchTab('arquitectura')" id="m-nav-arquitectura"
+            class="m-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all text-white/40">
+            <i class="ph-bold ph-cpu text-lg"></i>
+            <span class="text-[9px] font-bold mt-0.5">Tech</span>
+        </button>
+        <button onclick="switchTab('impacto')" id="m-nav-impacto"
+            class="m-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all text-white/40">
+            <i class="ph-bold ph-chart-line-up text-lg"></i>
+            <span class="text-[9px] font-bold mt-0.5">Impacto</span>
+        </button>
+    </div>
+
+    <main
+        class="flex-1 min-h-screen flex items-center justify-center px-4 md:px-8 lg:pl-28 lg:pr-8 py-8 lg:py-12 max-w-7xl mx-auto w-full">
+
+        <!-- INICIO -->
+        <section id="slide-portada"
+            class="slide-content w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center animate-slide-in">
+            <div class="lg:col-span-7 space-y-4 lg:space-y-6 text-center lg:text-left mt-4 lg:mt-0">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sena/10 border border-sena/20 text-sena text-xs font-black uppercase tracking-widest">
+                    <i class="ph-bold ph-graduation-cap"></i> Proyecto Formativo • ADSO
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-black text-white tracking-tighter leading-none">
+                    EVENTS<span class="text-sena">.</span>
+                </h1>
+                <p
+                    class="text-base md:text-lg lg:text-xl text-white/60 font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    Sistema web para la gestión integral, el control organizado y la automatización de eventos
+                    institucionales del SENA.
+                </p>
+                <div class="h-px bg-gradient-to-r from-white/10 to-transparent w-3/4 mx-auto lg:mx-0"></div>
+                <p class="text-xs font-bold text-white/40 tracking-wider uppercase">SENA Regional Caldas - Centro de
+                    Procesos
+                    Industriales y Construcción</p>
+            </div>
+
+            <div
+                class="lg:col-span-5 bg-base-200 border border-white/5 rounded-3xl p-6 lg:p-8 shadow-2xl relative overflow-hidden w-full">
+                <div class="absolute -right-16 -bottom-16 w-48 h-48 bg-sena/10 rounded-full blur-3xl"></div>
+                <h3
+                    class="text-xs font-black uppercase tracking-widest text-sena mb-4 lg:mb-6 flex items-center justify-center lg:justify-start gap-1.5">
+                    <i class="ph-bold ph-users-three text-sm"></i> Equipo de Desarrollo
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-4 p-3 bg-black/20 rounded-xl border border-white/5">
+                        <div
+                            class="w-9 h-9 rounded-lg bg-sena/10 text-sena grid place-items-center font-bold text-sm shrink-0">
+                            SC </div>
+                        <span class="text-sm font-bold text-white/80">Simón Cardenas</span>
+                    </div>
+                    <div class="flex items-center gap-4 p-3 bg-black/20 rounded-xl border border-white/5">
+                        <div
+                            class="w-9 h-9 rounded-lg bg-sena/10 text-sena grid place-items-center font-bold text-sm shrink-0">
+                            EA </div>
+                        <span class="text-sm font-bold text-white/80">Evelyn Arroyave</span>
+                    </div>
+                    <div class="flex items-center gap-4 p-3 bg-black/20 rounded-xl border border-white/5">
+                        <div
+                            class="w-9 h-9 rounded-lg bg-sena/10 text-sena grid place-items-center font-bold text-sm shrink-0">
+                            JH </div>
+                        <span class="text-sm font-bold text-white/80">Juan Camilo Hernández</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTRODUCCION -->
+        <section id="slide-problema" class="slide-content w-full hidden animate-slide-in">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full">
+
+                <div class="lg:col-span-7 space-y-6 w-full flex flex-col justify-between">
+                    <div class="space-y-2 text-center lg:text-left">
+                        <div
+                            class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-red-400">
+                            <i class="ph-bold ph-warning-octagon"></i> Planteamiento del Problema
+                        </div>
+                        <h2 class="text-3xl lg:text-5xl font-black text-white tracking-tight uppercase">
+                            El Desafío de la <span class="text-red-500">Gestión Manual de Eventos</span>
+                        </h2>
+                        <p class="text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                            En la actualidad, la programación y la gestión de las actividades institucionales en el SENA
+                            Regional Caldas dependen de metodologías tradicionales que limitan la eficiencia. La falta
+                            de herramientas centralizadas dificulta el control administrativo y fragmenta la experiencia
+                            de los participantes, haciendo necesaria una solución integral y automatizada.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+
+                        <div
+                            class="bg-cardbg border border-white/[0.05] p-5 rounded-2xl group hover:border-red-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 mb-3 group-hover:scale-110 transition-transform">
+                                <i class="ph-bold ph-user-list text-xl"></i>
+                            </div>
+                            <h3 class="text-white font-black text-xs uppercase tracking-wider mb-2">Control Tedioso</h3>
+                            <p class="text-[11px] text-slate-400 leading-snug">El registro de asistencia mediante
+                                planillas físicas resulta lento y obsoleto para eventos de alta concurrencia.</p>
+                        </div>
+
+                        <div
+                            class="bg-cardbg border border-white/[0.05] p-5 rounded-2xl group hover:border-red-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 mb-3 group-hover:scale-110 transition-transform">
+                                <i class="ph-bold ph-chat-centered-dots text-xl"></i>
+                            </div>
+                            <h3 class="text-white font-black text-xs uppercase tracking-wider mb-2">Métricas de
+                                Satisfacción</h3>
+                            <p class="text-[11px] text-slate-400 leading-snug">Inexistencia de un canal centralizado
+                                para recopilar, evaluar y conocer la experiencia de los usuarios en tiempo real.</p>
+                        </div>
+
+                        <div
+                            class="bg-cardbg border border-white/[0.05] p-5 rounded-2xl group hover:border-red-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 mb-3 group-hover:scale-110 transition-transform">
+                                <i class="ph-bold ph-chart-bar text-xl"></i>
+                            </div>
+                            <h3 class="text-white font-black text-xs uppercase tracking-wider mb-2">Análisis de Datos
+                            </h3>
+                            <p class="text-[11px] text-slate-400 leading-snug">Ausencia de un sistema estadístico
+                                consolidado que organice la información y genere reportes analíticos precisos.</p>
+                        </div>
+
+                        <div
+                            class="bg-cardbg border border-white/[0.05] p-5 rounded-2xl group hover:border-red-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 mb-3 group-hover:scale-110 transition-transform">
+                                <i class="ph-bold ph-calendar-blank text-xl"></i>
+                            </div>
+                            <h3 class="text-white font-black text-xs uppercase tracking-wider mb-2">Agenda Vulnerable
+                            </h3>
+                            <p class="text-[11px] text-slate-400 leading-snug">La programación manual de eventos
+                                incrementa el riesgo de errores en el suministro de información y reserva de espacios.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 w-full h-full flex flex-col">
+                    <div
+                        class="bg-[#0c121b] border border-white/[0.08] rounded-3xl overflow-hidden shadow-2xl relative w-full h-full flex flex-col justify-between">
+
+                        <div class="flex bg-white/[0.02] p-1 gap-1 w-full shrink-0">
+                            <button onclick="toggleAbstract('es')" id="btn-es"
+                                class="flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all bg-sena text-black">
+                                Español
+                            </button>
+                            <button onclick="toggleAbstract('en')" id="btn-en"
+                                class="flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all text-white/40 hover:text-white">
+                                English
+                            </button>
+                        </div>
+
+                        <div class="p-6 relative flex-1 flex flex-col justify-center min-h-[260px] lg:min-h-0">
+                            <div class="absolute top-6 right-6 opacity-5 pointer-events-none">
+                                <i class="ph-fill ph-quotes text-7xl text-sena"></i>
+                            </div>
+
+                            <div id="text-es" class="space-y-2">
+                                <h4 class="text-sena font-black text-[10px] uppercase tracking-widest italic">Abstract
+                                </h4>
+                                <p class="text-sm text-slate-200 leading-relaxed font-medium italic">
+                                    "El proyecto Events surge como una solución tecnológica orientada a optimizar la
+                                    gestión de eventos dentro del Servicio Nacional de Aprendizaje (SENA). Busca
+                                    centralizar y automatizar estos procesos, facilitando la labor tanto de los
+                                    organizadores como de los asistentes."
+                                </p>
+                            </div>
+
+                            <div id="text-en" class="hidden space-y-2">
+                                <h4 class="text-sena font-black text-[10px] uppercase tracking-widest italic">Abstract
+                                </h4>
+                                <p class="text-sm text-slate-200 leading-relaxed font-medium italic">
+                                    "The Events project emerges as a technological solution aimed at optimizing event
+                                    management within the National Learning Service (SENA). It seeks to centralize and
+                                    automate these processes, facilitating the work of both organizers and attendees."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="h-1 w-full bg-gradient-to-r from-transparent via-sena/40 to-transparent shrink-0">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- JUSTIFICACION, ALCANCE Y ANTECENDENTES -->
+        <section id="slide-solucion" class="slide-content w-full hidden animate-slide-in">
+            <div class="max-w-3xl mb-4 lg:mb-6 space-y-1 text-center lg:text-left">
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sena">
+                    <i class="ph-bold ph-shield-check"></i> Sustentación del Proyecto
+                </div>
+                <h2 class="text-2xl lg:text-3xl font-black text-white tracking-tight uppercase">Fundamentos del Sistema
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch w-full">
+
+                <div
+                    class="lg:col-span-6 bg-gradient-to-br from-[#0c121b] to-base-300 border border-sena/20 p-5 rounded-2xl flex flex-col justify-between relative overflow-hidden shadow-xl">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2.5">
+                            <div
+                                class="w-9 h-9 rounded-lg bg-sena/10 border border-sena/30 flex items-center justify-center text-sena">
+                                <i class="ph-bold ph-scales text-lg"></i>
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-[9px] font-black uppercase tracking-widest text-sena">Sustentación
+                                    Técnica</span>
+                                <h3 class="text-white text-sm font-black uppercase tracking-wider">Justificación</h3>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-[11px] text-slate-300 leading-relaxed text-justify">
+                            <p>
+                                La adecuada gestión de eventos en el <span class="text-white font-semibold">SENA</span>
+                                es fundamental para la organización, control y participación. Actualmente, se presentan
+                                dificultades en el registro manual de asistencia, la recolección de información y la
+                                evaluación de actividades, afectando la toma de decisiones y la mejora continua.
+                            </p>
+                            <p>
+                                La implementación de <span class="text-white font-semibold">Events</span> surge como una
+                                solución innovadora para optimizar estos procesos mediante el control en tiempo real de
+                                la asistencia con geolocalización, aplicación de encuestas de satisfacción y generación
+                                de reportes detallados, logrando una gestión eficiente, organizada y confiable.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-4 pt-3 border-t border-white/[0.03] flex items-center justify-between text-[9px] font-bold uppercase tracking-wider text-white/30">
+                        <span>SENA</span>
+                        <span>Regional Caldas</span>
+                    </div>
+                </div>
+
+                <div
+                    class="lg:col-span-6 bg-gradient-to-br from-[#0c121b] to-base-200 border border-white/5 p-5 rounded-2xl flex flex-col justify-between shadow-xl">
+                    <div class="space-y-3.5">
+                        <div class="flex items-center gap-2.5">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-sena/10 border border-sena/20 flex items-center justify-center text-sena">
+                                <i class="ph-bold ph-books text-base"></i>
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-[9px] font-black uppercase tracking-widest text-white/40">Contexto
+                                    de Origen</span>
+                                <h4 class="text-xs font-black text-white uppercase tracking-wider">Antecedentes</h4>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-2.5 text-[11px] text-slate-300 text-left">
+                            <li class="flex items-start gap-2">
+                                <i class="ph-bold ph-layout text-sena text-xs shrink-0 mt-0.5"></i>
+                                <span><strong class="text-white font-medium">Digitalización de Procesos:</strong> El uso
+                                    previo de sistemas de información en el SENA impulsa la automatización y eficiencia
+                                    administrativa.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="ph-bold ph-user-list text-sena text-xs shrink-0 mt-0.5"></i>
+                                <span><strong class="text-white font-medium">Sistemas de Control:</strong> La existencia
+                                    de herramientas digitales de control y seguimiento en tiempo real para registrar la
+                                    participación.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="ph-bold ph-chart-bar text-sena text-xs shrink-0 mt-0.5"></i>
+                                <span><strong class="text-white font-medium">Encuestas Digitales:</strong> El uso
+                                    consolidado de encuestas en línea como clave para evaluar la calidad de forma rápida
+                                    y organizada.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="ph-bold ph-arrows-merge text-sena text-xs shrink-0 mt-0.5"></i>
+                                <span><strong class="text-white font-medium">Necesidad de Mejora:</strong> La base de
+                                    optimizar la organización, seguimiento y evaluación mediante soluciones tecnológicas
+                                    integradas.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    class="lg:col-span-12 bg-gradient-to-br from-[#0c121b] to-base-200 border border-white/5 p-4 rounded-2xl shadow-xl">
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2.5">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-sena/10 border border-sena/20 flex items-center justify-center text-sena">
+                                <i class="ph-bold ph-compass text-base"></i>
+                            </div>
+                            <div>
+                                <span
+                                    class="block text-[9px] font-black uppercase tracking-widest text-white/40">
+                                    Implementaciones en el Sistema</span>
+                                <h4 class="text-xs font-black text-white uppercase tracking-wider">Alcance del Sistema
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-[11px]">
+                            <div class="p-2 bg-white/[0.01] border border-white/5 rounded-xl flex items-center gap-2">
+                                <i class="ph-bold ph-map-pin text-sena shrink-0"></i>
+                                <span class="text-slate-300"><strong class="text-white font-medium">Geografía:</strong>
+                                    Implementación en el SENA con posibilidad de expansión.</span>
+                            </div>
+                            <div class="p-2 bg-white/[0.01] border border-white/5 rounded-xl flex items-center gap-2">
+                                <i class="ph-bold ph-users-three text-sena shrink-0"></i>
+                                <span class="text-slate-300"><strong class="text-white font-medium">Usuarios:</strong>
+                                    Organizadores, participantes y administradores.</span>
+                            </div>
+                            <div class="p-2 bg-white/[0.01] border border-white/5 rounded-xl flex items-center gap-2">
+                                <i class="ph-bold ph-calendar text-sena shrink-0"></i>
+                                <span class="text-slate-300"><strong class="text-white font-medium">Eventos:</strong>
+                                    Creación y administración de eventos institucionales.</span>
+                            </div>
+                            <div class="p-2 bg-white/[0.01] border border-white/5 rounded-xl flex items-center gap-2">
+                                <i class="ph-bold ph-clock text-sena shrink-0"></i>
+                                <span class="text-slate-300"><strong class="text-white font-medium">Asistencia:</strong>
+                                    Registro de participantes en tiempo real.</span>
+                            </div>
+                            <div class="p-2 bg-white/[0.01] border border-white/5 rounded-xl flex items-center gap-2">
+                                <i class="ph-bold ph-chat-centered-dots text-sena shrink-0"></i>
+                                <span class="text-slate-300"><strong class="text-white font-medium">Encuestas:</strong>
+                                    Recolección de opiniones al finalizar los eventos.</span>
+                            </div>
+                            <div class="p-2 bg-white/[0.01] border border-white/5 rounded-xl flex items-center gap-2">
+                                <i class="ph-bold ph-file-arrow-down text-sena shrink-0"></i>
+                                <span class="text-slate-300"><strong class="text-white font-medium">Reportes:</strong>
+                                    Generación de informes sobre asistencia y resultados.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DESCRIPCIÓN Y OBJETIVOS -->
+        <section id="slide-objetivos" class="slide-content w-full hidden animate-slide-in">
+            <div class="max-w-3xl mb-8 lg:mb-10 space-y-2 text-center lg:text-left">
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sena">
+                    <i class="ph-bold ph-compass"></i> Alcance del Proyecto
+                </div>
+                <h2 class="text-3xl lg:text-5xl font-black text-white tracking-tight uppercase">Propósito y Solución
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch w-full">
+
+                <div
+                    class="lg:col-span-5 bg-gradient-to-br from-[#0c121b] to-base-300 border border-sena/20 p-6 lg:p-8 rounded-3xl flex flex-col justify-between relative overflow-hidden shadow-2xl">
+                    <div class="absolute -right-8 -top-8 w-24 h-24 bg-sena/5 rounded-full blur-xl"></div>
+
+                    <div class="space-y-4">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-sena/10 border border-sena/30 flex items-center justify-center text-sena">
+                            <i class="ph-bold ph-star text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-black uppercase tracking-widest text-sena mb-1">Objetivo
+                                General</span>
+                            <h3 class="text-white text-lg lg:text-xl font-black leading-snug uppercase">
+                                Optimizar la gestión global de eventos institucionales.
+                            </h3>
+                        </div>
+                        <div class="h-px bg-white/10 w-full"></div>
+                        <div>
+                            <span
+                                class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Descripción
+                                del Software</span>
+                            <p class="text-xs text-slate-300 leading-relaxed text-justify">
+                                EVENTS es un sistema desarrollado y centralizado para transformar la planeación
+                                de eventos en la Regional Caldas. El sistema reemplaza los procesos manuales por un
+                                entorno optimizado capaz de agendar espacios, registrar asistencia de forma ágil y
+                                recopilar la opinión de los usuarios en una sola plataforma.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-6 pt-4 border-t border-white/[0.03] flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-white/30">
+                        <span>Sena</span>
+                        <span>Regional Caldas</span>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 flex flex-col justify-between space-y-3">
+                    <span
+                        class="block text-[10px] font-black uppercase tracking-widest text-white/40 pl-2 text-center lg:text-left">
+                        Componentes y Objetivos Específicos
+                    </span>
+
+                    <div
+                        class="flex gap-4 p-4 bg-cardbg border border-white/5 rounded-2xl items-center group hover:border-sena/30 transition-all duration-300 shadow-lg">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-sena/10 text-sena flex items-center justify-center font-bold text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-shield-check"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-black text-white uppercase tracking-wider">1. Registro, Control y
+                                Seguridad de Acceso</h4>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">
+                                Diseñar e implementar un sistema de registro de asistencia que identifique y almacene de
+                                forma precisa, segura y en tiempo real la participación de los usuarios.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex gap-4 p-4 bg-cardbg border border-white/5 rounded-2xl items-center group hover:border-sena/30 transition-all duration-300 shadow-lg">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-sena/10 text-sena flex items-center justify-center font-bold text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-map-pin-line"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-black text-white uppercase tracking-wider">2. Mapeo y Satisfacción
+                                del Usuario</h4>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">
+                                Desarrollar módulos de encuestas para medir el nivel de aceptación de las actividades e
+                                integrar un sistema de geolocalización que recopile la ubicación exacta del participante
+                                al registrarse.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex gap-4 p-4 bg-cardbg border border-white/5 rounded-2xl items-center group hover:border-sena/30 transition-all duration-300 shadow-lg">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-sena/10 text-sena flex items-center justify-center font-bold text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-presentation-chart"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-black text-white uppercase tracking-wider">3. Análisis Estadístico y
+                                Reportes Regionales</h4>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">
+                                Implementar apartados estadísticos consolidados para generar y descargar informes
+                                detallados que apoyen a la administración de la regional en la toma de decisiones y
+                                mejora de eventos.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ARQUITECTURA Y TECNOLOGÍA -->
+        <section id="slide-arquitectura" class="slide-content w-full hidden animate-slide-in">
+            <div class="max-w-3xl mb-8 space-y-1.5 text-center lg:text-left">
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sena">
+                    <i class="ph-bold ph-code"></i> Ecosistema del Software
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase">Arquitectura & Tech
+                    Stack</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch w-full">
+
+                <div
+                    class="bg-gradient-to-b from-[#0c121b] to-base-200 border border-white/5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-sena/20 transition-all duration-300 overflow-hidden">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-sena/10 border border-sena/20 flex items-center justify-center text-sena shadow-md">
+                                <i class="ph ph-paint-brush text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-white uppercase tracking-wider">Frontend</h4>
+                                <span class="block text-[10px] text-white/40 tracking-wide">Interfaz y
+                                    Experiencia</span>
+                            </div>
+                        </div>
+
+                        <p class="text-[11px] text-white/50 leading-relaxed">Estructura visual moderna y componentes
+                            altamente responsivos.</p>
+
+                        <div class="border-t border-white/5 pt-4">
+                            <div class="flex flex-col gap-3">
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-html.png" alt="HTML5" class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">HTML5</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-css.png" alt="CSS3" class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">CSS3</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-tailwind.png" alt="Tailwind CSS"
+                                        class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">Tailwind</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-daisyui.png" alt="Daisy UI" class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">Daisy UI</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-sweetalert2.png" alt="SweetAlert2"
+                                        class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">SweetAlert2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-[3px] bg-gradient-to-r from-green-950 via-[#39a900]/50 to-green-950"></div>
+                </div>
+
+                <div
+                    class="bg-gradient-to-b from-[#0c121b] to-base-200 border border-white/5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-sena/20 transition-all duration-300 overflow-hidden">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-sena/10 border border-sena/20 flex items-center justify-center text-sena shadow-md">
+                                <i class="ph-bold ph-cpu text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-white uppercase tracking-wider">Backend</h4>
+                                <span class="block text-[10px] text-white/40 tracking-wide">Lógica y Servicios</span>
+                            </div>
+                        </div>
+
+                        <p class="text-[11px] text-white/50 leading-relaxed">Procesamiento seguro en el servidor,
+                            gestión ágil de peticiones HTTP e integración de módulos especializados.</p>
+
+                        <div class="border-t border-white/5 pt-4">
+                            <div class="flex flex-col gap-3">
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-php.png" alt="PHP" class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">PHP</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-js.png" alt="JavaScript" class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">JavaScript</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-leaflet.png" alt="Leaflet JS" class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">Leaflet</span>
+                                </div>
+                                <div
+                                    class="flex items-center gap-4 p-3 bg-white/[0.01] border border-white/5 rounded-xl hover:bg-white/[0.03] transition-colors">
+                                    <img src="imgs/logo-fullcalendar.png" alt="Full Calendar"
+                                        class="h-12 w-12 object-contain">
+                                    <span class="text-xs font-semibold text-slate-300">Full Calendar</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-[3px] bg-gradient-to-r from-green-950 via-[#39a900]/50 to-green-950"></div>
+                </div>
+
+                <div
+                    class="bg-gradient-to-b from-[#0c121b] to-base-200 border border-white/5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-sena/20 transition-all duration-300 overflow-hidden">
+                    <div class="p-6 space-y-4 w-full">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-sena/10 border border-sena/20 flex items-center justify-center text-sena shadow-md">
+                                <i class="ph-bold ph-database text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-white uppercase tracking-wider">Base de Datos</h4>
+                                <span class="block text-[10px] text-white/40 tracking-wide">Persistencia de Datos</span>
+                            </div>
+                        </div>
+
+                        <p class="text-[11px] text-white/50 leading-relaxed">Almacenamiento relacional diseñado bajo
+                            rigurosos estándares de normalización e integridad de datos.</p>
+
+                        <div class="border-t border-white/5 pt-4 w-full">
+                            <div
+                                class="flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-2 p-3 bg-white/[0.01] border border-dashed border-white/10 rounded-xl h-auto md:h-40 w-full box-border">
+                                <img src="imgs/logo-mysql.png" alt="MySQL"
+                                    class="h-12 w-12 md:h-16 md:w-auto object-contain filter brightness-95 block shrink-0">
+                                <span class="text-xs font-semibold text-slate-300">MySQL</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full h-[3px] bg-gradient-to-r from-green-950 via-[#39a900]/50 to-green-950"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- IMPACTO Y BENEFICIOS -->
+        <section id="slide-impacto" class="slide-content w-full hidden animate-slide-in">
+            <div class="max-w-3xl mb-6 lg:mb-8 space-y-1.5 text-center lg:text-left">
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sena">
+                    <i class="ph-bold ph-rocket-launch"></i> Resultados Esperados
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-black text-white tracking-tight uppercase">Impacto y Beneficios
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
+
+                <div class="lg:col-span-5 bg-black/20 border border-white/5 p-6 rounded-3xl shadow-2xl">
+                    <span class="block text-[10px] font-black uppercase tracking-widest text-sena mb-6">Dimensiones de
+                        Impacto</span>
+
+                    <ul class="steps steps-vertical w-full text-left" style="--step-color: #39a900;">
+                        <li class="step step-primary min-h-[5rem] relative before:!bg-[#39a900] after:!bg-[#39a900] after:!text-white after:!font-bold"
+                            data-content="S">
+                            <div class="flex flex-col text-left pl-4 pb-4">
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Impacto Social</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Fortalece la comunicación y
+                                    participación, basando la mejora institucional en la experiencia real del usuario.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="step step-primary min-h-[5rem] relative before:!bg-[#39a900] after:!bg-[#39a900] after:!text-white after:!font-bold"
+                            data-content="E">
+                            <div class="flex flex-col text-left pl-4 pb-4">
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Impacto Económico</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Optimiza recursos y reduce costos
+                                    operativos mediante la automatización de reportes y registros manuales.</p>
+                            </div>
+                        </li>
+                        <li class="step step-primary min-h-[5rem] relative before:!bg-[#39a900] after:!bg-[#39a900] after:!text-white after:!font-bold"
+                            data-content="A">
+                            <div class="flex flex-col text-left pl-4 pb-4">
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Impacto Ambiental</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Cero desperdicio. Elimina el uso
+                                    masivo de papel mediante la digitalización completa de procesos y encuestas.</p>
+                            </div>
+                        </li>
+                        <li class="step step-primary relative before:!bg-[#39a900] after:!bg-[#39a900] after:!text-white after:!font-bold"
+                            data-content="T">
+                            <div class="flex flex-col text-left pl-4">
+                                <h4 class="text-xs font-bold text-white uppercase tracking-wider">Impacto Tecnológico
+                                </h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">Impulsa la transformación digital
+                                    del SENA con herramientas web de vanguardia y análisis de datos en vivo.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-7 space-y-4">
+                    <span class="block text-[10px] font-black uppercase tracking-widest text-white/40 pl-2">Valor para
+                        los Stakeholders</span>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div
+                            class="bg-gradient-to-br from-[#0c121b] to-base-200 border border-white/5 p-4 rounded-2xl hover:border-sena/30 transition-all group">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="ph-bold ph-users text-sena text-lg"></i>
+                                <h5 class="text-[11px] font-black text-white uppercase">Organizadores</h5>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed">Gestión simplificada en tiempo real y
+                                optimización en la planificación de eventos.</p>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-[#0c121b] to-base-200 border border-white/5 p-4 rounded-2xl hover:border-sena/30 transition-all group">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="ph-bold ph-user-check text-sena text-lg"></i>
+                                <h5 class="text-[11px] font-black text-white uppercase">Participantes</h5>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed">Registro rápido, organizado y voz
+                                directa a través de encuestas de satisfacción.</p>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-[#0c121b] to-base-200 border border-white/5 p-4 rounded-2xl hover:border-sena/30 transition-all group">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="ph-bold ph-shield-star text-sena text-lg"></i>
+                                <h5 class="text-[11px] font-black text-white uppercase">Administradores</h5>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed">Control centralizado de datos y
+                                visualización clara para la toma de decisiones.</p>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-[#0c121b] to-base-200 border border-white/5 p-4 rounded-2xl hover:border-sena/30 transition-all group">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="ph-bold ph-bank text-sena text-lg"></i>
+                                <h5 class="text-[11px] font-black text-white uppercase">Institución SENA</h5>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-relaxed">Modernización administrativa y
+                                fortalecimiento institucional basado en datos reales.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-4 bg-sena/5 border border-sena/20 rounded-2xl">
+                        <p class="text-[11px] text-slate-300 italic text-center">
+                            "EVENTS no es solo un software de registro, es el motor de transformación para la excelencia
+                            en la gestión de eventos del SENA."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // CONTROL DE NAVEGACIÓN ENTRE DIAPOSITIVAS
+        function switchTab(targetId) {
+            // 1. Ocultar absolutamente todas las secciones usando 'hidden'
+            document.querySelectorAll('.slide-content').forEach(slide => {
+                slide.classList.add('hidden');
+            });
+
+            // 2. Mostrar únicamente la sección seleccionada quitando 'hidden'
+            const activeSlide = document.getElementById('slide-' + targetId);
+            if (activeSlide) {
+                activeSlide.classList.remove('hidden');
+            }
+
+            // 3. Actualizar estados del Menú Lateral (Desktop) - ¡PRESERVANDO TOOLTIPS Y HOVER VERDE!
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl text-white/30 hover:text-[#39a900] hover:bg-[#39a900]/10 transition-all duration-300";
+            });
+            const activeBtn = document.getElementById('nav-' + targetId);
+            if (activeBtn) {
+                activeBtn.className = "nav-btn active tooltip tooltip-right flex items-center justify-center p-3.5 rounded-xl bg-sena text-black shadow-lg shadow-sena/20 transition-all duration-300";
+            }
+
+            // 4. Actualizar estados del Menú Inferior (Mobile)
+            document.querySelectorAll('.m-nav-btn').forEach(btn => {
+                btn.className = "m-nav-btn text-white/20";
+            });
+            const activeMobileBtn = document.getElementById('m-nav-' + targetId);
+            if (activeMobileBtn) {
+                activeMobileBtn.className = "m-nav-btn text-sena";
+            }
+        }
+
+        // CONTROL DEL CONMUTADOR DE IDIOMA (ABSTRACT)
+        function toggleAbstract(lang) {
+            const esText = document.getElementById('text-es');
+            const enText = document.getElementById('text-en');
+            const esBtn = document.getElementById('btn-es');
+            const enBtn = document.getElementById('btn-en');
+
+            if (lang === 'es') {
+                esText.classList.remove('hidden');
+                enText.classList.add('hidden');
+                esBtn.className = "flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all bg-sena text-black";
+                enBtn.className = "flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all text-white/40 hover:text-white";
+            } else {
+                esText.classList.add('hidden');
+                enText.classList.remove('hidden');
+                enBtn.className = "flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all bg-sena text-black";
+                esBtn.className = "flex-1 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all text-white/40 hover:text-white";
+            }
+        }
+    </script>
+</body>
+
+</html>
